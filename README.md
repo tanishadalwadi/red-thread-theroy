@@ -1,11 +1,37 @@
-![Thumbnail video tutorial](https://user-images.githubusercontent.com/6551176/233513056-525d827e-e8fa-4b57-901a-b05175505a55.jpg)
+# Red Thread Theory
 
-[Live Demo](https://r3f-Red Thread Theory-final.vercel.app/)
+_A modern 3D-experience using R3F Atmosphere_
 
-[Video tutorial](https://youtu.be/8r8rzp8t2aM)
+## 🎯 Project Overview
 
-[Starter pack](https://github.com/wass08/r3f-Red Thread Theory-starter)
+This project is built with React + Vite + react-three-fiber (R3F) and showcases an interactive environment utilizing the Atmosphere system.  
+I cloned from a base project and reworked it, bringing in custom visualizations, user-interaction flows, and a minimal, modern aesthetic aligned with the design direction.
 
-### 3D Model credits
+## 🚀 Getting Started
 
-Airplane by Poly by Google [CC-BY](https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/8VysVKMXN2J)
+### Prerequisites
+
+- Node.js (v16+)
+- npm or yarn
+- Git
+
+### Setup
+
+```bash
+# Clone the repo
+git clone https://github.com/tanishadalwadi/red-thread-theroy.git
+cd red-thread-theroy
+
+# Install dependencies
+npm install
+# or
+yarn
+
+# Run dev server
+npm run dev
+
+# Build for production
+npm run build
+# Preview production build
+npm run preview
+```

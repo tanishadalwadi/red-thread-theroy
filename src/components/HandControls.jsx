@@ -1,6 +1,4 @@
 import { useEffect, useRef } from "react";
-import { Html } from "@react-three/drei";
-import { Camera } from "@mediapipe/camera_utils";
 
 // Simple gesture detection:
 // - Open hand (>=4 extended fingers) => forward (1)
@@ -10,7 +8,20 @@ export const HandControls = ({ onGestureChange }) => {
   const videoRef = useRef(null);
   const lastDirectionRef = useRef(0);
   const debounceRef = useRef({ dir: 0, since: 0 });
+  const pointDebounceRef = useRef({ gesture: null, since: 0 });
   const scriptsLoadedRef = useRef(false);
+  const suppressMovementRef = useRef(false);
+  const upHoldRef = useRef({ active: false, since: 0 });
+  const upConfirmedRef = useRef(false);
+  const junctionLockedRef = useRef(false);
+  const lockedSinceRef = useRef(0);
+  const commitTimerRef = useRef(null);
+  const pendingDirRef = useRef(0);
+  const lastCommitAtRef = useRef(0);
+  const pointConfirmRef = useRef({ choice: null, at: 0 });
+  const decisionActiveRef = useRef(false);
+  const decisionTriggeredRef = useRef(false);
+  const rawBufferRef = useRef([]);
 
   useEffect(() => {
     const countExtendedFingers = (lm) => {
@@ -23,6 +34,7 @@ export const HandControls = ({ onGestureChange }) => {
       return [index, middle, ring, pinky].filter(Boolean).length;
     };
 
+
     const classifyDirection = (lm) => {
       const count = countExtendedFingers(lm);
       const index = lm && lm[8] && lm[6] ? lm[8].y < lm[6].y : false;
@@ -33,19 +45,69 @@ export const HandControls = ({ onGestureChange }) => {
       return lastDirectionRef.current; // keep previous to avoid jitter
     };
 
+    // Detect index-finger pointing direction (up/left/right/down) for junction choices
+    // Based on MediaPipe Hands landmarks: use vector from index MCP (5) to tip (8)
+    // and require other fingers (middle, ring, pinky) to be curled to reduce false positives.
+    const detectPointGesture = (lm) => {
+      if (!lm || lm.length < 21) return null;
+      const isCurled = (tip, pip) => lm[tip].y > lm[pip].y;
+      const othersCurled =
+        isCurled(12, 10) && isCurled(16, 14) && isCurled(20, 18);
+      const indexExtended = lm[8].y < lm[6].y;
+      if (!indexExtended || !othersCurled) return null;
+      const mcp = lm[5];
+      const tip = lm[8];
+      const dx = tip.x - mcp.x;
+      const dy = tip.y - mcp.y;
+      const thresh = 0.06; // slightly lower threshold for easier detection
+      if (dy < -thresh) return "up"; // index pointing up
+      if (dx > thresh) return "left"; // map to screen-left (no mirroring)
+      if (dx < -thresh) return "right"; // map to screen-right (no mirroring)
+      if (dy > thresh) return "down"; // index pointing down
+      return null;
+    };
+
     const onResults = (results) => {
       const lm = results.multiHandLandmarks?.[0];
       const dir = lm ? classifyDirection(lm) : 0;
       const now = performance.now();
-      // small debounce to reduce flicker
-      if (debounceRef.current.dir !== dir) {
-        debounceRef.current = { dir, since: now };
+      // Buffer raw directions and commit the mode to suppress jitter
+      rawBufferRef.current.push(dir);
+      if (rawBufferRef.current.length > 6) rawBufferRef.current.shift();
+      const freq = { "-1": 0, "0": 0, "1": 0 };
+      for (const d of rawBufferRef.current) freq[d] = (freq[d] || 0) + 1;
+      const modeDir = freq[1] >= Math.max(freq[0], freq[-1])
+        ? 1
+        : freq[-1] >= Math.max(freq[0], freq[1])
+        ? -1
+        : 0;
+      if (pendingDirRef.current !== modeDir) {
+        pendingDirRef.current = modeDir;
+        if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
+        commitTimerRef.current = setTimeout(() => {
+          const cooldownMs = 400;
+          if (performance.now() - lastCommitAtRef.current < cooldownMs) return;
+          if (lastDirectionRef.current !== pendingDirRef.current) {
+            lastDirectionRef.current = pendingDirRef.current;
+            lastCommitAtRef.current = performance.now();
+            onGestureChange?.(lastDirectionRef.current);
+          }
+        }, 220);
       }
-      if (now - debounceRef.current.since > 120) {
-        if (lastDirectionRef.current !== debounceRef.current.dir) {
-          lastDirectionRef.current = debounceRef.current.dir;
-          onGestureChange?.(lastDirectionRef.current);
-        }
+      // Detect index-finger pointing directional gestures and dispatch junction choice
+      const point = lm ? detectPointGesture(lm) : null;
+      if (pointDebounceRef.current.gesture !== point) {
+        pointDebounceRef.current = { gesture: point, since: now };
+      }
+      // Immediate junction choice dispatch from point gestures; no lock or suppression
+      const lastPointAt = pointConfirmRef.current.at || 0;
+      const lastPointChoice = pointConfirmRef.current.choice;
+      const pointCooldownMs = 700;
+      const cooled = now - lastPointAt > pointCooldownMs || lastPointChoice !== point;
+      if (point && (point === "left" || point === "right" || point === "up") && cooled) {
+        pointConfirmRef.current = { choice: point, at: now };
+        console.log("[HandControls] point gesture; dispatch", { choice: point });
+        window.dispatchEvent(new CustomEvent("junction-choose", { detail: point }));
       }
     };
 
@@ -73,6 +135,32 @@ export const HandControls = ({ onGestureChange }) => {
 
     let hands;
     let cam;
+    // Create a fixed DOM video element outside the canvas to avoid renderer conflicts
+    const createFixedPreview = () => {
+      const v = document.createElement("video");
+      v.setAttribute("playsinline", "");
+      v.muted = true;
+      v.autoplay = true;
+      Object.assign(v.style, {
+        position: "fixed",
+        left: "16px",
+        bottom: "16px",
+        width: "220px",
+        height: "140px",
+        objectFit: "cover",
+        transform: "scaleX(-1)", // mirror for natural feel
+        border: "2px solid rgba(250, 204, 21, 0.85)", // yellow accent
+        borderRadius: "8px",
+        boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
+        background: "#000",
+        opacity: "0.95",
+        zIndex: "1200",
+        pointerEvents: "none",
+      });
+      document.body.appendChild(v);
+      videoRef.current = v;
+      return v;
+    };
     const setup = async () => {
       // ensure permissions and video element ready
       try {
@@ -86,6 +174,9 @@ export const HandControls = ({ onGestureChange }) => {
           );
           scriptsLoadedRef.current = true;
         }
+
+        // Create and mount fixed preview element
+        const v = createFixedPreview();
 
         const stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: "user" },
@@ -103,8 +194,8 @@ export const HandControls = ({ onGestureChange }) => {
         hands.setOptions({
           maxNumHands: 1,
           modelComplexity: 1,
-          minDetectionConfidence: 0.7,
-          minTrackingConfidence: 0.6,
+          minDetectionConfidence: 0.8,
+          minTrackingConfidence: 0.75,
         });
         hands.onResults(onResults);
 
@@ -123,6 +214,28 @@ export const HandControls = ({ onGestureChange }) => {
     };
     setup();
 
+    // Clear suppression and manage decision window after junction lock/unlock
+    const onLock = (e) => {
+      const locked = Boolean(e.detail);
+      junctionLockedRef.current = locked;
+      if (locked) {
+        lockedSinceRef.current = performance.now();
+        decisionActiveRef.current = true;
+        decisionTriggeredRef.current = false;
+        upConfirmedRef.current = false;
+        console.log("[HandControls] junction locked; gesture listening enabled");
+      } else {
+        console.log("[HandControls] junction unlock received; reset hold/suppression");
+        suppressMovementRef.current = false;
+        upHoldRef.current = { active: false, since: 0 };
+        upConfirmedRef.current = false;
+        decisionActiveRef.current = false;
+        decisionTriggeredRef.current = false;
+        console.log("[HandControls] gesture listening disabled; movement resumes");
+      }
+    };
+    window.addEventListener("junction-lock", onLock);
+
     return () => {
       try {
         cam?.stop();
@@ -132,17 +245,20 @@ export const HandControls = ({ onGestureChange }) => {
       try {
         hands?.close();
       } catch {}
+      // Remove the fixed preview element from the DOM
+      try {
+        const v = videoRef.current;
+        if (v && v.parentNode) v.parentNode.removeChild(v);
+      } catch {}
+      try {
+        if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
+      } catch {}
+      try {
+        window.removeEventListener("junction-lock", onLock);
+      } catch {}
     };
   }, [onGestureChange]);
 
-  // Hidden video element for mediapipe input
-  return (
-    <Html>
-      <video
-        ref={videoRef}
-        playsInline
-        style={{ position: "fixed", right: 0, bottom: 0, width: 1, height: 1, opacity: 0, pointerEvents: "none" }}
-      />
-    </Html>
-  );
+  // No JSX children for R3F; preview is managed imperatively in the DOM
+  return null;
 };

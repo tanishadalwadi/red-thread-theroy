@@ -19,8 +19,8 @@ I cloned from a base project and reworked it, bringing in custom visualizations,
 
 ```bash
 # Clone the repo
-git clone https://github.com/tanishadalwadi/red-thread-theroy.git
-cd red-thread-theroy
+git clone https://github.com/tanishadalwadi/red-thread-Theory.git
+cd red-thread-Theory
 
 # Install dependencies
 npm install

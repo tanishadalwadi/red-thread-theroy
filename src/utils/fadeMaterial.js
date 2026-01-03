@@ -35,7 +35,10 @@ vec4 diffuseColor = vec4( diffuse, fadeOpacity * opacity );`
     );
 
 export const fadeOnBeforeCompile = (shader) => {
-  shader.fragmentShader = replaceFragmentShader(shader.fragmentShader);
+  shader.fragmentShader = replaceFragmentShader(shader.fragmentShader).replace(
+    `#include <output_fragment>`,
+    `gl_FragColor = diffuseColor;`
+  );
 };
 
 export const fadeOnBeforeCompileFlat = (shader) => {

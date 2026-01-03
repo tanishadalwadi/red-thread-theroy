@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+@layer base {
+  :root {
+    --bg-primary: #081124;
+    --accent-red: #FF3B3B;
+    --white: #FFFFFF;
+    --black: #000000;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--white);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 700;
+  }
+
+  h1 {
+    font-size: 5.5rem;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+  }
+
+  h2 {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  h3 {
+    font-size: 2rem;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    font-size: 1.125rem;
+    line-height: 1.75;
+    font-weight: 400;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 3rem;
+    }
+    
+    h2 {
+      font-size: 2.25rem;
+    }
+    
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }
+}

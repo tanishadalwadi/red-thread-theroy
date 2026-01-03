@@ -1,12 +1,275 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700;800&display=swap");
+/* Use local fonts to avoid external dependency and ensure preload is used */
+@font-face {
+  font-family: "DM Serif Display";
+  src: url("/fonts/DMSerifDisplay-Regular.subset.woff2") format("woff2"),
+       url("/fonts/DMSerifDisplay-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter-Regular.subset.woff2") format("woff2"),
+       url("/fonts/Inter-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 #root {
   width: 100vw;
   height: 100vh;
+  background: #081124;
 }
 
 body {
   margin: 0;
+  background: #081124;
+}
+
+/* Figma/Make typography scale (safe subset) */
+:root {
+  --bg-primary: #081124;
+  --accent-red: #ff3b3b;
+  --text-white: #ffffff;
+}
+
+.make-ui {
+  color: var(--text-white);
+  font-family: Inter, sans-serif;
+}
+
+.make-brand {
+  font-family: "DM Serif Display", serif;
+  letter-spacing: 0.5px;
+}
+
+.make-heading-1 {
+  font-family: "Inter Tight", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 3.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.make-heading-2 {
+  font-family: "Inter Tight", Inter, sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.make-body {
+  font-family: Inter, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.make-status-pill {
+  font-family: "DM Serif Display", serif;
+  font-size: 0.95rem;
+  letter-spacing: 1.5px;
+}
+
+/* End page cinematic design and animations */
+:root {
+  --end-bg: #0a0514;
+  --end-red: #ff4458;
+  --end-red-2: #ff5566;
+}
+
+.end-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--end-bg);
+  color: rgba(255,255,255,0.9);
+  position: relative;
+  overflow: hidden;
+  padding: 1rem; /* responsive container padding */
+}
+
+.end-flash {
+  position: absolute;
+  inset: 0;
+  background: rgba(255,68,88,0.6);
+  pointer-events: none;
+  animation: end-flash-fade 0.8s ease-out forwards;
+}
+
+@keyframes end-flash-fade {
+  0% { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+
+.end-burst {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 32px;
+  height: 32px;
+  background: radial-gradient(circle, rgba(255,68,88,1) 0%, rgba(255,68,88,0.6) 35%, rgba(255,68,88,0.2) 60%, transparent 70%);
+  filter: blur(48px);
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  animation: end-burst-grow 1.5s ease-out forwards;
+}
+
+@keyframes end-burst-grow {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}
+
+.glass-card {
+  max-width: 48rem; /* 3xl */
+  width: 100%;
+  border-radius: 1.5rem; /* rounded-3xl */
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(24px); /* backdrop-blur-xl */
+  background: rgba(255,255,255,0.05); /* bg-white/5 */
+  box-shadow: 0 50px 160px rgba(255,68,88,0.18);
+  padding: 2rem; /* default padding 8 */
+}
+
+@media (min-width: 640px) {
+  .glass-card { padding: 3rem; /* padding 12 on larger screens */ }
+}
+
+.brand-gradient-text {
+  font-family: "DM Serif Display", serif;
+  background: linear-gradient(90deg, var(--end-red), var(--end-red-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.brand-underline {
+  height: 3px;
+  width: 160px;
+  margin: 8px auto 0;
+  background: linear-gradient(90deg, var(--end-red), var(--end-red-2));
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: end-underline-grow 0.8s ease-out forwards;
+  animation-delay: 1.3s;
+}
+
+@keyframes end-underline-grow {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
+.anim-card-in {
+  opacity: 0;
+  transform: translateY(42px) scale(0.9);
+  animation: end-card-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0.8s;
+}
+
+@keyframes end-card-in {
+  0% { opacity: 0; transform: translateY(42px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Route fade for smoother handoff from portal */
+.page-route-fade {
+  opacity: 0;
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.anim-logo {
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards;
+  animation-delay: 1s;
+}
+
+.badge {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--end-red);
+  background: rgba(255,255,255,0.08);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 10px 30px rgba(0,0,0,0.25);
+  transform: scale(0);
+  animation: end-badge-in 0.6s cubic-bezier(.34,1.56,.64,1) forwards; /* spring-like */
+  animation-delay: 1.6s;
+}
+
+@keyframes end-badge-in {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+.anim-quote {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: end-quote-in 1s ease-out forwards;
+  animation-delay: 2s;
+}
+
+@keyframes end-quote-in {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.quote-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0) 100%);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: end-divider-in 1s ease-out forwards;
+  animation-delay: 2.5s;
+}
+
+@keyframes end-divider-in {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
+.anim-button {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: end-button-in 0.6s ease-out forwards;
+  animation-delay: 4s;
+}
+
+@keyframes end-button-in {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.cta-button {
+  font-family: Inter, sans-serif;
+  padding: 14px 22px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: white;
+  background: linear-gradient(180deg, var(--end-red) 0%, #ff2a4a 100%);
+  box-shadow: 0 0 20px rgba(255,68,88,0.4);
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255,68,88,0.6);
+}
+
+.cta-button:active {
+  transform: scale(0.98);
+}
+
+/* generic fadeIn re-use */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 ::-webkit-scrollbar {
@@ -32,6 +295,17 @@ body {
   right: 0;
 }
 
+/* Dimming backdrop only when overlay is active (before play) */
+.overlay:not(.overlay--disable):not(.overlay--no-dim)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 120% at 50% 50%, rgba(0, 2, 35, 0.75) 0%, rgba(0, 0, 0, 0.85) 60%, rgba(0, 0, 0, 0.9) 100%);
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .overlay--disable {
   pointer-events: none;
 }
@@ -42,7 +316,7 @@ body {
   left: 0;
   bottom: 0;
   right: 0;
-  background: white;
+  background: #000000; /* loader backdrop black */
   transition: opacity 2s ease-in-out;
 }
 
@@ -70,6 +344,8 @@ body {
   top: 50vh;
   animation: fadeUp 2.4s ease-in-out;
   transition: all 2s ease-in-out;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255,255,255,0.1);
+  z-index: 1;
 }
 
 .intro--disappear .logo {
@@ -109,6 +385,12 @@ body {
   letter-spacing: 0.05rem;
   position: absolute;
   top: 24vh;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(3px);
+  padding: 8px 12px;
+  border-radius: 9999px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  z-index: 1;
 }
 
 .intro--disappear .intro__scroll {
@@ -125,7 +407,8 @@ body {
   font-family: "DM Serif Display", serif;
   font-size: 1.25rem;
   letter-spacing: 0.25rem;
-  color: #3535cc;
+  color: #ff1744; /* default text color: red */
+  background: #ffffff; /* default background: white */
   border-radius: 32px;
   cursor: pointer;
   display: inline-block;
@@ -137,6 +420,7 @@ body {
   transition: 0.42s ease-in-out;
   animation: fadeIn 2.4s ease-in-out 2s forwards;
   opacity: 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
 }
 
 .explore:hover {
@@ -147,11 +431,12 @@ body {
   width: 200%;
   height: 300%;
   border-radius: 100%;
+  box-shadow: 0 0 30px rgba(255, 23, 68, 0.6); /* red glow */
 }
 
 .explore:before {
   content: "";
-  background: #3535cc;
+  background: #ff1744; /* brand red hover fill */
   position: absolute;
   width: 0%;
   bottom: 0;
@@ -211,6 +496,11 @@ body {
   .outro__text {
     font-size: 1rem;
   }
+
+  /* Responsive typography */
+  .make-heading-1 { font-size: 2.25rem; }
+  .make-heading-2 { font-size: 1.5rem; }
+  .make-body { font-size: 1rem; }
 }
 
 /* ANIMATIONS */
@@ -252,4 +542,126 @@ body {
   100% {
     transform: rotate(360deg);
   }
+}
+
+/* Glassmorphism dialog styles */
+.glass-panel {
+  background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 100%);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 16px;
+  padding: 12px 16px;
+  color: #ffffff;
+  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.35), inset 0 1px 1px rgba(255,255,255,0.12);
+}
+
+.glass-panel--compact {
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.glass-panel--accent {
+  border-color: rgba(255,59,59,0.45);
+  box-shadow: 0 0 24px rgba(255,59,59,0.25), 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.glass-panel--green {
+  border-color: rgba(34,197,94,0.55);
+  box-shadow: 0 0 24px rgba(34,197,94,0.25), 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.glass-title {
+  font-family: "DM Serif Display", serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  font-size: 1.2rem;
+  margin-bottom: 6px;
+  color: #ffffff;
+}
+
+.glass-body {
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.85);
+}
+
+.glass-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.glass-btn {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.25);
+  cursor: pointer;
+  background: rgba(255,255,255,0.10);
+  color: #ffffff;
+  backdrop-filter: blur(4px);
+  transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.glass-btn:hover {
+  background: rgba(255,255,255,0.16);
+  transform: translateY(-1px);
+}
+
+.glass-btn--primary {
+  border-color: rgba(59,130,246,0.60);
+  box-shadow: 0 0 12px rgba(59,130,246,0.35);
+}
+
+.glass-btn--success {
+  border-color: rgba(34,197,94,0.75);
+  box-shadow: 0 0 12px rgba(34,197,94,0.35);
+  color: #041a07;
+  background: rgba(34,197,94,0.18);
+}
+
+.glass-btn--danger {
+  border-color: rgba(239,68,68,0.75);
+  box-shadow: 0 0 12px rgba(239,68,68,0.35);
+}
+
+.glass-hint {
+  font-family: "Inter", sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.8);
+}
+
+/* Layout fixes for Figma Make pages */
+:root {
+  --make-nav-height: 72px;
+  --make-page-padding-x: 16px;
+  --make-page-padding-y: 24px;
+}
+
+.make-page {
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+  padding-top: var(--make-nav-height);
+  box-sizing: border-box;
+}
+
+
+.make-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--make-page-padding-y) var(--make-page-padding-x);
+  box-sizing: border-box;
+}
+
+/* Full-bleed container for pages that need edge-to-edge backgrounds */
+.make-container--full {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.make-section {
+  margin-top: 24px;
 }

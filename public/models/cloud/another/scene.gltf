@@ -1,0 +1,151 @@
+{
+  "accessors": [
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 13501,
+      "max": [
+        5.940156936645508,
+        5.004971981048584,
+        4.423130989074707
+      ],
+      "min": [
+        -6.25356912612915,
+        -3.4842989444732666,
+        -4.740661144256592
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 162012,
+      "componentType": 5126,
+      "count": 13501,
+      "max": [
+        0.9991384744644165,
+        0.9997326731681824,
+        0.999733030796051
+      ],
+      "min": [
+        -0.9997548460960388,
+        -0.9995889067649841,
+        -0.9998847246170044
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 80994,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "Laurie Annis (https://sketchfab.com/laurieannis)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/high-poly-stylizezd-neuron-free-download-0dfd0cd08a1d484d9a8ab02a4223b5b5",
+      "title": "High Poly Stylizezd Neuron - Free Download"
+    },
+    "generator": "Sketchfab-16.16.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 323976,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 324024,
+      "byteOffset": 323976,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 648000,
+      "uri": "scene.bin"
+    }
+  ],
+  "materials": [
+    {
+      "name": "None",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.08278013630699911,
+          0.880952621518126,
+          1.0,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0
+          },
+          "indices": 2,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "name": "Neuron.obj.cleaner.materialmerger.gles"
+    },
+    {
+      "mesh": 0,
+      "name": "Object_2"
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ]
+}

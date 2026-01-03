@@ -22,3 +22,25 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Large 3D assets
+public/models/
+public/ship_in_clouds/
+public/**/textures/
+
+# Media
+*.mp4
+*.mov
+*.webm
+*.glb
+*.gltf
+
+# Images over design size
+*.psd
+*.blend
+
+# Build
+dist/
+node_modules/
+
+# System
+.DS_Store

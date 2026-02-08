@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import "/Users/tanishadalwadi/red-threadtheroy/Cinematic Landing Page Design/src/styles/globals.css";
-import "/Users/tanishadalwadi/red-threadtheroy/Cinematic Landing Page Design/src/index.css";
-import { Nav } from "/Users/tanishadalwadi/red-threadtheroy/Cinematic Landing Page Design/src/components/Nav";
-import { Hero } from "/Users/tanishadalwadi/red-threadtheroy/Cinematic Landing Page Design/src/components/Hero";
-import { ConstellationStory } from "/Users/tanishadalwadi/red-threadtheroy/Cinematic Landing Page Design/src/components/ConstellationStory";
+import "../../Cinematic Landing Page Design/src/index.css";
+import { Nav } from "../../Cinematic Landing Page Design/src/components/Nav";
+import { Hero } from "../../Cinematic Landing Page Design/src/components/Hero";
+import { ConstellationStory } from "../../Cinematic Landing Page Design/src/components/ConstellationStory";
 
 function HomeMake() {
   const navigate = useNavigate();

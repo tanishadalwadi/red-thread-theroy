@@ -10,7 +10,6 @@ import { PlayModal } from "../../Cinematic Landing Page Design/src/components/Pl
 import { CharacterUpload } from "../../Cinematic Landing Page Design/src/components/CharacterUpload";
 // Bring in the cinematic CSS so Tailwind utility classes render correctly
 import "../../Cinematic Landing Page Design/src/index.css";
-import "../../Cinematic Landing Page Design/src/styles/globals.css";
 
 export default function CinematicLanding() {
   const [currentPage, setCurrentPage] = useState("home");

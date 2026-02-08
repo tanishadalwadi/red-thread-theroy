@@ -2,8 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { usePlay } from "../contexts/Play";
 import { usePhoto } from "../contexts/PhotoContext";
-import "/Users/tanishadalwadi/red-threadtheroy/Cinematic Landing Page Design/src/styles/globals.css";
-import "/Users/tanishadalwadi/red-threadtheroy/Cinematic Landing Page Design/src/index.css";
+import "../../Cinematic Landing Page Design/src/index.css";
 
 function EndPortalMake() {
   const navigate = useNavigate();

@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import "/Users/tanishadalwadi/red-threadtheroy/Cinematic Landing Page Design/src/styles/globals.css";
-import "/Users/tanishadalwadi/red-threadtheroy/Cinematic Landing Page Design/src/index.css";
-import { PlayModal } from "/Users/tanishadalwadi/red-threadtheroy/Cinematic Landing Page Design/src/components/PlayModal";
+import "../../Cinematic Landing Page Design/src/index.css";
+import { PlayModal } from "../../Cinematic Landing Page Design/src/components/PlayModal";
 import { usePlay } from "../contexts/Play";
 
 function InstructionsMake() {

@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { PlayProvider } from "./contexts/Play";
 import { PhotoProvider } from "./contexts/PhotoContext";
 import "./index.css";
+import "../Cinematic Landing Page Design/src/styles/globals.css";
 
 if (import.meta.env.DEV) {
   const originalWarn = console.warn;
@@ -35,5 +36,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </PhotoProvider>
       </PlayProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

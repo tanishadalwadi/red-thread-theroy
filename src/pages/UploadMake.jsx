@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import "/Users/tanishadalwadi/red-threadtheroy/Cinematic Landing Page Design/src/styles/globals.css";
-import "/Users/tanishadalwadi/red-threadtheroy/Cinematic Landing Page Design/src/index.css";
-import { CharacterUpload } from "/Users/tanishadalwadi/red-threadtheroy/Cinematic Landing Page Design/src/components/CharacterUpload";
+import "../../Cinematic Landing Page Design/src/index.css";
+import { CharacterUpload } from "../../Cinematic Landing Page Design/src/components/CharacterUpload";
 import { usePlay } from "../contexts/Play";
 
 function UploadMake() {

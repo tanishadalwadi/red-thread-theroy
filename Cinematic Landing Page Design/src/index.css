@@ -1974,8 +1974,7 @@
   inherits: false
 }
 
-@import "tailwindcss";
-@import url(https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap);
+/* Tailwind and fonts are already imported at file top; redundant imports removed */
 /* virtual-fs:file:///styles/globals.css */
 @layer base {
   :root {

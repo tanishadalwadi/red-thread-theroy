@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Portal from "./components/Portal.tsx";
-import Viewer360 from "./components/Viewer360.tsx";
+import Portal from "./components/Portal";
+import Viewer360 from "./components/Viewer360";
 
 const App: React.FC = () => {
   const [activated, setActivated] = useState(false);

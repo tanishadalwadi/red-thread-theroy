@@ -2,7 +2,7 @@ import { useGLTF, useAnimations } from "@react-three/drei";
 import React, { useMemo, useEffect } from "react";
 
 export default function HomeBrain({ scale = [4.2, 4.2, 4.2] }) {
-  const gltf = useGLTF("/models/cloud/brain_hologram/scene.gltf");
+  const gltf = useGLTF("/models/brain_hologram/scene.gltf");
   const { scene, animations } = gltf;
 
   const cloned = useMemo(() => (scene ? scene.clone(true) : null), [scene]);
@@ -29,4 +29,4 @@ export default function HomeBrain({ scale = [4.2, 4.2, 4.2] }) {
   );
 }
 
-useGLTF.preload("/models/cloud/brain_hologram/scene.gltf");
+useGLTF.preload("/models/brain_hologram/scene.gltf");

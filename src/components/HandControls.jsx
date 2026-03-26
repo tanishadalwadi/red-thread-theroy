@@ -178,10 +178,13 @@ export const HandControls = ({ onGestureChange }) => {
         // Create and mount fixed preview element
         const v = createFixedPreview();
 
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user" },
-          audio: false,
-        });
+        const cachedStream = window.__gestureStream;
+        const stream = cachedStream
+          ? cachedStream
+          : await navigator.mediaDevices.getUserMedia({
+              video: { facingMode: "user" },
+              audio: false,
+            });
         if (!videoRef.current) return;
         videoRef.current.srcObject = stream;
         await new Promise((res) => {
@@ -241,6 +244,7 @@ export const HandControls = ({ onGestureChange }) => {
         cam?.stop();
         const tracks = videoRef.current?.srcObject?.getTracks?.() ?? [];
         tracks.forEach((t) => t.stop());
+        if (window.__gestureStream) window.__gestureStream = null;
       } catch {}
       try {
         hands?.close();

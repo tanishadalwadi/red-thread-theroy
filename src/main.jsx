@@ -36,5 +36,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </PhotoProvider>
       </PlayProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

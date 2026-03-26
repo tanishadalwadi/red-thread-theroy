@@ -8,7 +8,7 @@ import PreStartZoomRig from "./components/PreStartZoomRig.jsx";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { Overlay } from "./components/Overlay";
 import { usePlay } from "./contexts/Play";
-import Viewer360 from "./components/Viewer360.tsx";
+import Viewer360 from "./components/Viewer360";
 import { usePhoto } from "./contexts/PhotoContext";
 import * as THREE from "three";
 import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";

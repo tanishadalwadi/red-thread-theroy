@@ -15,11 +15,26 @@ export default function StartButton() {
   const handleStart = () => {
     if (disabled) return;
     setDisabled(true);
-    // Honor selected control mode
-    setCameraEnabled(controlMode === "hand" ? true : false);
-    // Start audio immediately
+
+    if (controlMode === "hand") {
+      const getUM = navigator.mediaDevices?.getUserMedia?.bind(navigator.mediaDevices);
+      if (getUM) {
+        getUM({ video: { facingMode: "user" }, audio: false })
+          .then((stream) => {
+            window.__gestureStream = stream;
+            setCameraEnabled(true);
+          })
+          .catch(() => {
+            setCameraEnabled(false);
+          });
+      } else {
+        setCameraEnabled(false);
+      }
+    } else {
+      setCameraEnabled(false);
+    }
+
     window.dispatchEvent(new Event("audio-start"));
-    // Trigger pre-start zoom; game view starts when zoom finishes
     window.dispatchEvent(new Event("prestart-zoom"));
   };
 
